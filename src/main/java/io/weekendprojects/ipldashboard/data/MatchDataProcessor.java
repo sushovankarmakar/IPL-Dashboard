@@ -4,9 +4,11 @@ import io.weekendprojects.ipldashboard.model.Match;
 import java.time.LocalDate;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.item.ItemProcessor;
+import org.springframework.stereotype.Component;
 
+@Component
 @Slf4j
-public class PersonItemProcessor implements ItemProcessor<MatchInput, Match> {
+public class MatchDataProcessor implements ItemProcessor<MatchInput, Match> {
 
   @Override
   public Match process(final MatchInput matchInput) {

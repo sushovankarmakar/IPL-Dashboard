@@ -1,13 +1,24 @@
 package io.weekendprojects.ipldashboard.model;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import java.time.LocalDate;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
+@Entity
+@JsonInclude(Include.NON_DEFAULT)
 public class Match {
 
+  @Id
   private Long id;
   private String city;
   private LocalDate date;
