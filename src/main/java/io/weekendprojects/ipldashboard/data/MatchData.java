@@ -3,7 +3,7 @@ package io.weekendprojects.ipldashboard.data;
 import lombok.Data;
 
 @Data
-public class MatchInput {
+public class MatchData {
 
   private String id;
   private String city;

@@ -1,9 +1,9 @@
 package io.weekendprojects.ipldashboard.config;
 
-import io.weekendprojects.ipldashboard.data.MatchDataProcessor;
-import io.weekendprojects.ipldashboard.data.MatchInput;
+import io.weekendprojects.ipldashboard.batch.MatchDataDBWriter;
+import io.weekendprojects.ipldashboard.batch.MatchDataProcessor;
+import io.weekendprojects.ipldashboard.data.MatchData;
 import io.weekendprojects.ipldashboard.model.Match;
-import javax.sql.DataSource;
 import lombok.RequiredArgsConstructor;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
@@ -11,9 +11,6 @@ import org.springframework.batch.core.configuration.annotation.EnableBatchProces
 import org.springframework.batch.core.configuration.annotation.JobBuilderFactory;
 import org.springframework.batch.core.configuration.annotation.StepBuilderFactory;
 import org.springframework.batch.core.launch.support.RunIdIncrementer;
-import org.springframework.batch.item.database.BeanPropertyItemSqlParameterSourceProvider;
-import org.springframework.batch.item.database.JdbcBatchItemWriter;
-import org.springframework.batch.item.database.builder.JdbcBatchItemWriterBuilder;
 import org.springframework.batch.item.file.FlatFileItemReader;
 import org.springframework.batch.item.file.builder.FlatFileItemReaderBuilder;
 import org.springframework.batch.item.file.mapping.BeanWrapperFieldSetMapper;
@@ -37,26 +34,30 @@ public class BatchConfig {
 
   public final StepBuilderFactory stepBuilderFactory;
 
+  private final MatchDataDBWriter matchDataDBWriter;
+
+  private final MatchDataProcessor matchDataProcessor;
+
   @Bean
-  public FlatFileItemReader<MatchInput> reader() {
-    return new FlatFileItemReaderBuilder<MatchInput>()
+  public FlatFileItemReader<MatchData> reader() {
+    return new FlatFileItemReaderBuilder<MatchData>()
         .name("matchInputReader")
         .resource(new ClassPathResource(fileInput))
         .linesToSkip(1)
         .delimited()
         .names(fieldNames)
         .fieldSetMapper(new BeanWrapperFieldSetMapper<>() {{
-          setTargetType(MatchInput.class);
+          setTargetType(MatchData.class);
         }})
         .build();
   }
 
-  @Bean
+  /*@Bean
   public MatchDataProcessor processor() {
     return new MatchDataProcessor();
-  }
+  }*/
 
-  @Bean
+  /*@Bean
   public JdbcBatchItemWriter<Match> writer(DataSource dataSource) {
 
     String sqlQuery = "INSERT INTO match "
@@ -70,7 +71,7 @@ public class BatchConfig {
         .sql(sqlQuery)
         .dataSource(dataSource)
         .build();
-  }
+  }*/
 
   @Bean
   public Job importUserJob(JobCompletionNotificationListener listener, Step step1) {
@@ -83,12 +84,12 @@ public class BatchConfig {
   }
 
   @Bean
-  public Step step1(JdbcBatchItemWriter<Match> writer) {
+  public Step step1() {
     return stepBuilderFactory.get("step1")
-        .<MatchInput, Match>chunk(10)
+        .<MatchData, Match>chunk(10)
         .reader(reader())
-        .processor(processor())
-        .writer(writer)
+        .processor(matchDataProcessor)
+        .writer(matchDataDBWriter)
         .build();
   }
 
