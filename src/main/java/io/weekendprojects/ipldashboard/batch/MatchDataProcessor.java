@@ -34,7 +34,7 @@ public class MatchDataProcessor implements ItemProcessor<MatchData, Match> {
         .secondUmpire(matchData.getUmpire2())
         .build();
 
-    log.info("Converting {} into {} , time taken : {}", matchData, match, (System.currentTimeMillis() - startTime));
+    log.info("Converting {} into {} , time taken : {} ms", matchData, match, (System.currentTimeMillis() - startTime));
 
     return match;
   }

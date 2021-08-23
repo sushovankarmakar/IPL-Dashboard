@@ -2,6 +2,7 @@ package io.weekendprojects.ipldashboard.repository;
 
 import io.weekendprojects.ipldashboard.model.Match;
 import java.util.List;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -26,5 +27,9 @@ public interface MatchRepository extends JpaRepository<Match, Long> {
       + "WHERE m.awayTeam = m.matchWinner "
       + "GROUP BY m.matchWinner")
   List<Object[]> findAwayTeamsAndTotalAwayWins();
+
+  //List<Match> findFirst5ByHomeTeamOrAwayTeamOrderByDateDesc(String homeTeam, String awayTeam);
+
+  List<Match> findByHomeTeamOrAwayTeam(String homeTeam, String awayTeam, Pageable pageable);
 
 }

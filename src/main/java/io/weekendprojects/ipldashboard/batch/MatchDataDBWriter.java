@@ -21,6 +21,6 @@ public class MatchDataDBWriter implements ItemWriter<Match> {
 
     matchRepository.saveAll(matches);
 
-    log.info("Writing matches into database, time taken : {}", (System.currentTimeMillis() - startTime));
+    log.info("Writing matches into database, time taken : {} ms", (System.currentTimeMillis() - startTime));
   }
 }

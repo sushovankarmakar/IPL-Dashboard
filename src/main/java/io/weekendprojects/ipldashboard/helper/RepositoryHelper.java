@@ -55,7 +55,7 @@ public class RepositoryHelper {
 
     teamRepository.saveAll(teams.values());
 
-    log.info("Writing teams into database, time taken : {}", (System.currentTimeMillis() - startTime));
+    log.info("Writing teams into database, time taken : {} ms", (System.currentTimeMillis() - startTime));
   }
 
 }
