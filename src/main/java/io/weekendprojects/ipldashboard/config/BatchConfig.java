@@ -3,6 +3,7 @@ package io.weekendprojects.ipldashboard.config;
 import io.weekendprojects.ipldashboard.batch.MatchDataDBWriter;
 import io.weekendprojects.ipldashboard.batch.MatchDataProcessor;
 import io.weekendprojects.ipldashboard.data.MatchData;
+import io.weekendprojects.ipldashboard.listener.JobCompletionNotificationListener;
 import io.weekendprojects.ipldashboard.model.Match;
 import lombok.RequiredArgsConstructor;
 import org.springframework.batch.core.Job;
@@ -39,6 +40,26 @@ public class BatchConfig {
   private final MatchDataProcessor matchDataProcessor;
 
   @Bean
+  public Job importUserJob(JobCompletionNotificationListener listener, Step step1) {
+    return jobBuilderFactory.get("importUserJob")
+        .incrementer(new RunIdIncrementer())
+        .listener(listener)
+        .flow(step1)
+        .end()
+        .build();
+  }
+
+  @Bean
+  public Step step1() {
+    return stepBuilderFactory.get("step1")
+        .<MatchData, Match>chunk(10)
+        .reader(reader())
+        .processor(matchDataProcessor)
+        .writer(matchDataDBWriter)
+        .build();
+  }
+
+  @Bean
   public FlatFileItemReader<MatchData> reader() {
     return new FlatFileItemReaderBuilder<MatchData>()
         .name("matchInputReader")
@@ -72,25 +93,5 @@ public class BatchConfig {
         .dataSource(dataSource)
         .build();
   }*/
-
-  @Bean
-  public Job importUserJob(JobCompletionNotificationListener listener, Step step1) {
-    return jobBuilderFactory.get("importUserJob")
-        .incrementer(new RunIdIncrementer())
-        .listener(listener)
-        .flow(step1)
-        .end()
-        .build();
-  }
-
-  @Bean
-  public Step step1() {
-    return stepBuilderFactory.get("step1")
-        .<MatchData, Match>chunk(10)
-        .reader(reader())
-        .processor(matchDataProcessor)
-        .writer(matchDataDBWriter)
-        .build();
-  }
 
 }
