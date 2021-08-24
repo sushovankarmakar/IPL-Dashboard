@@ -16,7 +16,7 @@ export const MatchSmallCard = ({ name, match }) => {
   } = match;
 
   const opponent = homeTeam === name ? awayTeam : homeTeam;
-  const opponentTeamRoute = `/team/${opponent}`;
+  const opponentTeamRoute = `/teams/${opponent}`;
 
   return (
     <div className="MatchSmallCard">
