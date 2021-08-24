@@ -2,7 +2,6 @@ package io.weekendprojects.ipldashboard.dto;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
-import io.weekendprojects.ipldashboard.model.Match;
 import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -27,6 +26,6 @@ public class TeamResponse {
   private Long totalAwayMatches;
   private Float awayWinPercentage;
 
-  private List<Match> latestMatches;
+  private List<MatchResponse> latestMatches;
 
 }

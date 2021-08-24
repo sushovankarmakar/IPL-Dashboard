@@ -1,14 +1,17 @@
 package io.weekendprojects.ipldashboard.service;
 
+import io.weekendprojects.ipldashboard.dto.MatchResponse;
 import io.weekendprojects.ipldashboard.dto.TeamResponse;
 import io.weekendprojects.ipldashboard.exception.TeamException;
 import io.weekendprojects.ipldashboard.model.Match;
 import io.weekendprojects.ipldashboard.model.Team;
 import io.weekendprojects.ipldashboard.repository.MatchRepository;
 import io.weekendprojects.ipldashboard.repository.TeamRepository;
+import java.util.ArrayList;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.BeanUtils;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -35,7 +38,14 @@ public class TeamServiceImpl implements TeamService {
 
     Pageable pageable = PageRequest.of(0, 5, Sort.Direction.DESC, "date");
 
-    List<Match> latestMatches = matchRepository.findByHomeTeamOrAwayTeam(teamName, teamName, pageable);
+    List<MatchResponse> latestMatches = new ArrayList<>();
+    List<Match> matches = matchRepository.findByHomeTeamOrAwayTeam(teamName, teamName, pageable);
+
+    for (Match match : matches) {
+      MatchResponse matchResponse = new MatchResponse();
+      BeanUtils.copyProperties(match, matchResponse);
+      latestMatches.add(matchResponse);
+    }
 
     long totalHomeWins = team.getTotalHomeWins();
     long totalAwayWins = team.getTotalAwayWins();
