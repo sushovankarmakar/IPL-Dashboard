@@ -26,6 +26,20 @@ public class TeamServiceImpl implements TeamService {
 
   private final MatchRepository matchRepository;
 
+  @Override
+  public List<TeamResponse> getAllTeams() {
+
+    List<TeamResponse> teams = new ArrayList<>();
+
+    teamRepository.findAll()
+        .forEach(team -> teams.add(
+            TeamResponse.builder()
+                .name(team.getName())
+                .build()));
+
+    return teams;
+  }
+
   public TeamResponse getTeamByTeamName(String teamName) {
     long startTime = System.currentTimeMillis();
 

@@ -11,12 +11,12 @@ export const TeamPage = () => {
   const { teamName } = useParams();
 
   useEffect(() => {
-    const fetchMatches = async () => {
+    const fetchTeamDetails = async () => {
       const response = await fetch(`http://localhost:8080/team/${teamName}`);
       const data = await response?.json();
       setTeam(data);
     };
-    fetchMatches();
+    fetchTeamDetails();
   }, [teamName]);
 
   if (!team || !team.name) {

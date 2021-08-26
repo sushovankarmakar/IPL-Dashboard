@@ -2,6 +2,7 @@ package io.weekendprojects.ipldashboard.controller;
 
 import io.weekendprojects.ipldashboard.dto.TeamResponse;
 import io.weekendprojects.ipldashboard.service.TeamService;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -18,6 +19,12 @@ import org.springframework.web.bind.annotation.RestController;
 public class TeamController {
 
   private final TeamService teamService;
+
+  @GetMapping
+  public List<TeamResponse> getAllTeams() {
+    log.info("Fetching all teams");
+    return teamService.getAllTeams();
+  }
 
   @GetMapping("/{team-name}")
   public TeamResponse getTeam(@PathVariable("team-name") String teamName) {
