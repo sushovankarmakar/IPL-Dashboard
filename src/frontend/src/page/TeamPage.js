@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { MatchDetailsCard } from "../component/MatchDetailsCard";
 import { MatchSmallCard } from "../component/MatchSmallCard";
 import { PieChart } from "react-minimal-pie-chart";
@@ -23,6 +23,8 @@ export const TeamPage = () => {
     return <h1>Team not found !!!</h1>;
   }
 
+  const latestYear = process.env.REACT_APP_DATA_END_YEAR;
+
   return (
     <div className="team-page">
       <div className="team-name-section">
@@ -36,12 +38,12 @@ export const TeamPage = () => {
             {
               title: "Losses " + (100 - team?.winPercentage),
               value: 100 - team?.winPercentage,
-              color: "#6a042a",
+              color: "#a91409",
             },
             {
               title: "Wins " + team?.winPercentage,
               value: team?.winPercentage,
-              color: "#046a56",
+              color: "#359fb9",
             },
           ]}
         />
@@ -61,7 +63,7 @@ export const TeamPage = () => {
         </div>
       ))}
       <div className="more-link">
-        <a href="#">More {">"}</a>
+        <Link to={`/teams/${teamName}/matches/${latestYear}`}>More {">"}</Link>
       </div>
     </div>
   );
