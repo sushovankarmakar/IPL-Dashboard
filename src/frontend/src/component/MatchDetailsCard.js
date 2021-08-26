@@ -1,7 +1,9 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
-export const MatchDetailsCard = ({ name, match }) => {
+import "./MatchDetailsCard.scss";
+
+export const MatchDetailsCard = ({ teamName, match }) => {
   if (!match) return null;
 
   const {
@@ -13,24 +15,53 @@ export const MatchDetailsCard = ({ name, match }) => {
     matchWinner,
     result,
     resultMargin,
+    tossWinner,
+    tossDecision,
+    firstUmpire,
+    secondUmpire,
+    playerOfMatch,
   } = match;
 
-  const opponent = homeTeam === name ? awayTeam : homeTeam;
+  const opponent = homeTeam === teamName ? awayTeam : homeTeam;
   const opponentTeamRoute = `/teams/${opponent}`;
+  const isMatchWon = teamName === matchWinner;
 
   return (
-    <div className="MatchDetailsCard">
-      <h3>Latest Matches</h3>
-      <h4>Match Details</h4>
-      <h3>
-        vs&nbsp;
-        <Link to={opponentTeamRoute}>{opponent}</Link>&nbsp; on {date}&nbsp;
-        at&nbsp;
-        {venue}, {city}
-      </h3>
-      <h3>
-        {matchWinner} won by {resultMargin} {result}
-      </h3>
+    <div
+      className={
+        isMatchWon
+          ? "match-details-card winner-card"
+          : "match-details-card loser-card"
+      }
+    >
+      <div>
+        <span className="vs">vs</span>
+        <h1>
+          <Link to={opponentTeamRoute}>{opponent}</Link>
+        </h1>
+        <p className="date">on {date}</p>
+        <p className="venue">
+          at&nbsp; {venue}, {city}
+        </p>
+        <h3 className="result">
+          {matchWinner} won by {resultMargin} {result}
+        </h3>
+      </div>
+
+      <div className="additional-data-section">
+        <h4>Toss</h4>
+        <p>
+          {tossWinner} won the toss and
+          <br />
+          chose to {tossDecision} first
+        </p>
+        <h4>Umpires</h4>
+        <p>
+          {firstUmpire}, {secondUmpire}
+        </p>
+        <h4>Man of the match</h4>
+        <p>{playerOfMatch}</p>
+      </div>
     </div>
   );
 };

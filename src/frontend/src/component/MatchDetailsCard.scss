@@ -1,0 +1,21 @@
+.match-details-card {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+
+  padding: 15px;
+  margin-bottom: 10px;
+
+  .date,
+  .venue,
+  .result,
+  .toss {
+    margin-top: 5px;
+  }
+
+  .additional-data-section {
+    text-align: right;
+    & > p {
+      margin-bottom: 10px;
+    }
+  }
+}
