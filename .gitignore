@@ -6,6 +6,8 @@ target/
 
 ### React Application ###
 
+/src/main/resources/public
+
 # dependencies
 /src/frontend/.eslintcache
 /src/frontend/node_modules/
