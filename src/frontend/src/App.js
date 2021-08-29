@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import { HashRouter as Router, Route, Switch } from "react-router-dom";
 import "./App.scss";
 import { MatchPage } from "./page/MatchPage";
 import { TeamPage } from "./page/TeamPage";

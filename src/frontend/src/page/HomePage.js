@@ -7,8 +7,10 @@ export const HomePage = () => {
   const [teams, setTeams] = useState([]);
 
   useEffect(() => {
+    const rootUrl = process.env.REACT_APP_API_ROOT_URL;
+
     const fetchMatches = async () => {
-      const response = await fetch(`http://localhost:8080/team`);
+      const response = await fetch(`${rootUrl}/team`);
       const data = await response?.json();
       setTeams(data);
     };

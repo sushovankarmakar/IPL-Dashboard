@@ -11,8 +11,10 @@ export const TeamPage = () => {
   const { teamName } = useParams();
 
   useEffect(() => {
+    const rootUrl = process.env.REACT_APP_API_ROOT_URL;
+
     const fetchTeamDetails = async () => {
-      const response = await fetch(`http://localhost:8080/team/${teamName}`);
+      const response = await fetch(`${rootUrl}/team/${teamName}`);
       const data = await response?.json();
       setTeam(data);
     };
@@ -58,9 +60,7 @@ export const TeamPage = () => {
       </div>
 
       {team?.latestMatches?.slice(1)?.map((match, index) => (
-        <div>
-          <MatchSmallCard key={index} teamName={team?.name} match={match} />
-        </div>
+        <MatchSmallCard key={index} teamName={team?.name} match={match} />
       ))}
       <div className="more-link">
         <Link to={`/teams/${teamName}/matches/${latestYear}`}>More {">"}</Link>
